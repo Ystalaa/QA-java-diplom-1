@@ -54,12 +54,18 @@ public class BurgerTest {
         burger.setBuns(database.availableBuns().get(0));
         burger.addIngredient(ingredient);
         burger.addIngredient(ingredientSecond);
-        String expected = "(==== grey bun ====)" + "\n"
-                + "= sauce hot sauce =" + "\n"
-                +"= filling sausage ="+ "\n"
-                + "(==== grey bun ====)" + "\n\n"
-                + "Price: 601,000000" + "\n";
-        assertEquals(expected, burger.getReceipt());
-    }
 
+        StringBuilder expected = new StringBuilder();
+        expected.append("(==== grey bun ====)").append("\r\n");
+
+        for (Ingredient ingredient : burger.ingredients) {
+            expected.append(String.format("= %s %s =%n", ingredient.getType().toString().toLowerCase(),
+                    ingredient.getName()));
+        }
+
+        expected.append(String.format("(==== grey bun ====)%n"));
+        expected.append(String.format("%nPrice: %f%n", burger.getPrice()));
+
+        assertEquals(expected.toString(), burger.getReceipt());
+    }
 }
